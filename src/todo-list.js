@@ -1,5 +1,5 @@
 const { combineReducers, createStore } = Redux;
-const store = createStore(todoApp);
+const { Component } = React;
 
 const todo = (state, action) => {
     switch (action.type) {
@@ -54,26 +54,46 @@ const todoApp = combineReducers({
     visibilityFilter,
 });
 
-store.dispatch({
-    type: 'ADD_TODO',
-    id: 0,
-    text: 'Learn Redux',
-});
+const store = createStore(todoApp);
 
-store.dispatch({
-    type: 'ADD_TODO',
-    id: 1,
-    text: 'Go shopping',
-});
+let nextTodoId = 0;
+class TodoApp extends Component {
+    render() {
+        return (
+            <div>
+                <input ref={node => {
+                    this.input = node;
+                }} />
+                <button onClick={() => {
+                    store.dispatch({
+                        type: 'ADD_TODO',
+                        id: nextTodoId++,
+                        text: this.input.value,
+                    });
+                    this.input.value = '';
+                }}>
+                    Add todo
+                </button>
+                <ul>
+                    {this.props.todos.map(todo =>
+                        <li key={todo.id}>
+                            {todo.text}
+                        </li>
+                    )}
+                </ul>
+            </div>
+        );
+    }
+};
 
-store.dispatch({
-    type: 'TOGGLE_TODO',
-    id: 0,
-});
+const render = () => {
+    ReactDOM.render(
+        <TodoApp
+            todos={store.getState().todos}
+        />,
+        document.getElementById('root')
+    );
+};
 
-store.dispatch({
-    type: 'SET_VISIBILITY_FILTER',
-    filter: 'SHOW_COMPLETED',
-});
-
-console.log(store.getState());
+store.subscribe(render);
+render();
