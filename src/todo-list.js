@@ -1,3 +1,6 @@
+const { combineReducers, createStore } = Redux;
+const store = createStore(todoApp);
+
 const todo = (state, action) => {
     switch (action.type) {
         case 'ADD_TODO':
@@ -46,25 +49,10 @@ const visibilityFilter = (
     }
 };
 
-const combineReducers = (reducers) => {
-    return (state = [], action) => {
-        return Object.keys(reducers).reduce((nextState, key) => {
-            nextState[key] = reducers[key](
-                state[key],
-                action
-            );
-            return nextState;
-        }, {});
-    };
-};
-
 const todoApp = combineReducers({
     todos,
     visibilityFilter,
 });
-
-const { createStore } = Redux;
-const store = createStore(todoApp);
 
 store.dispatch({
     type: 'ADD_TODO',
