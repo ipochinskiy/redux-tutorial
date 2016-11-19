@@ -17,7 +17,17 @@ const addLoggingToDispatch = (store) => {
         console.groupEnd(action.type);
         return returnValue;
     };
-}
+};
+
+const addPromiseSupportToDispatch = (store) => {
+    const rawDispatch = store.dispatch;
+    return (action) => {
+        if (typeof action.then === 'function') {
+            return action.then(rawDispatch);
+        }
+        return rawDispatch(action);
+    };
+};
 
 const configureStore = () => {
     const store = createStore(todoApp);
@@ -25,6 +35,8 @@ const configureStore = () => {
     if (process.env.NODE_ENV !== 'production') {
         store.dispatch = addLoggingToDispatch(store);
     }
+
+    store.dispatch = addPromiseSupportToDispatch(store);
 
     return store;
 };
