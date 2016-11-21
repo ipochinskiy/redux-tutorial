@@ -1,6 +1,6 @@
 {
   "name": "redux-tutorial",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A small project to learn basics of Redux",
   "scripts": {
     "start": "babel-node devServer.js",
