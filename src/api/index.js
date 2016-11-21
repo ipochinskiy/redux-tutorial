@@ -23,8 +23,8 @@ const delay = (ms) =>
     new Promise(resolve => setTimeout(resolve, ms));
 
 export const fetchTodos = (filter) =>
-    delay(5000).then(() => {
         if (Math.random() > 0.5) {
+    delay(500).then(() => {
             throw new Error('Kaboom');
         }
         switch (filter) {
@@ -40,7 +40,7 @@ export const fetchTodos = (filter) =>
     });
 
 export const addTodo = (text) =>
-    delay(5000).then(() => {
+    delay(500).then(() => {
         const todo = {
             id: v4(),
             text,
